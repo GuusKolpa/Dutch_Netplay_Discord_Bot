@@ -1,4 +1,4 @@
 resources/Dutch_Melee_Discord_Post_History.csv
-voting_results/*
 resources/discord_token.txt
-functions/__pycache__/*
+functions/__pycache__/
+*.pyc
