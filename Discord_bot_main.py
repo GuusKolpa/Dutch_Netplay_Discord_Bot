@@ -55,7 +55,7 @@ class VoteCountObj:
 
 
 VoteChecker = VoteCheck(False)
-VoteCounter = VoteCountObj('placeholder', VoteDict=dict(), VoteDuration=60, VoteTimeLeft=60)
+VoteCounter = VoteCountObj('init', VoteDict=dict(), VoteDuration=60, VoteTimeLeft=60)
 
 @client.event  # event decorator/wrapper
 async def on_ready():

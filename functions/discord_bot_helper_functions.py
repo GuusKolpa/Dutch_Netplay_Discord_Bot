@@ -10,7 +10,7 @@ class CustomError(Exception):
     pass
 
 def on_ready():
-    print("We have logged in as")
+    print("We have logged in")
 
 
 def generate_quote(generating_frame, args):
