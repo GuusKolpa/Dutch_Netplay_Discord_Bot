@@ -1,0 +1,9 @@
+{
+    "generate":"Randomly generates a quote (for a specific user, if specified).\n-postLength (number): minimum length of quote.\n-keyword (word/sentence): phrase that the quote must contain.\nExample: !generate Jim Morrison -postLength 150 -keyword doe maar",
+    "help":"Provides command-specific information\nExample: !help generate",
+    "image":"Randomly generates an image (for a specific user, if specified).\nExample: !image Jim Morrison",
+    "start_vote":"Starts a voting process for a given question (requires permissions)\n-time (duration of vote in seconds).\nExample: !start_vote Wie is de mol? -time 300",
+    "cancel_vote":"Cancels any ongoing vote (requires permissions)\nExample: !cancel_vote",
+    "vote":"If an there is an active vote, counts one vote for that option.\nExample: !vote Paul de Leeuw",
+    "current_vote":"Shows the current active vote and remaining time."
+}
