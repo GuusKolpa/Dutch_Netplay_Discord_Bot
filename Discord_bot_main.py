@@ -150,6 +150,12 @@ async def on_message(message):
             else:
                 await message.channel.send('No active vote')
 
+        elif command == '!botkill':
+            if any([role.permissions.kick_members for role in message.author.roles]):
+                await message.channel.send('Until next time! \U0001F44B')
+                await client.close()
+            else:
+                await message.add_reaction(u"\U0001F621")
         else:
             # If command does not exist, mention it #
             returnMessage = 'Command {} not found'.format(command)

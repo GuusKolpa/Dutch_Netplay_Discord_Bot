@@ -34,12 +34,12 @@ def generate_quote(generating_frame, args):
         pass
     else:
         RandomFrame = RandomFrame[RandomFrame["Author"].str.contains(
-            DiscordIDInput, case=False)]
+            DiscordIDInput, case=False, regex=False)]
     if ContainsKeyword == None:
         pass
     else:
         RandomFrame = RandomFrame[RandomFrame["Content"].str.contains(
-            ContainsKeyword, case=False)]
+            ContainsKeyword, case=False, regex=False)]
 
     if not RandomFrame.empty:
 
@@ -70,7 +70,7 @@ def generate_image(generating_frame, args):
         pass
     else:
         RandomFrame = RandomFrame[RandomFrame["Author"].str.contains(
-            DiscordIDInput, case=False)]
+            DiscordIDInput, case=False, regex=False)]
     if not RandomFrame.empty:
         SingleRandom = RandomFrame.sample(1).reset_index()
 
@@ -118,6 +118,7 @@ def retrieve_unnamed_argument(args, default_value=None):
             argument_val_list.append(arg)
     if argument_val_list:
         argument_value = ' '.join(argument_val_list)
+    
     return argument_value
 
 
