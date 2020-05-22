@@ -32,10 +32,6 @@ client = discord.Client()
 # Make sure to put the DISCORD_TOKEN environment variable with your appropriate token.
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-# global VoteCounting
-# VoteCounting = False
-
-
 class VoteCheck:
     def __init__(self, ActiveVote=False):
         self.ActiveVote = ActiveVote
