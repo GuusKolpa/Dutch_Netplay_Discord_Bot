@@ -1,9 +1,17 @@
 import time
-import os
+import os,sys,inspect
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir) 
+
 import datetime
 import re
 import json
+import yaml
 from collections import Counter
+import discord
+from resources import standard_messages
+import asyncio
 
 
 class CustomError(Exception):
@@ -149,3 +157,51 @@ def print_result_of_vote(VoteCounter):
         for votes in CounterOutput:
             strToPost = strToPost + '{}: {}\n'.format(votes[0],str(votes[1]))
         return strToPost
+
+def update_last_netplay_tournament_config(messageSent, config):
+    """Update the config.yml file to have the most recent tournament update.
+    """
+    config['automate_netplay_tournament']['last_message_id'] = messageSent.id
+    config['automate_netplay_tournament']['last_message_time'] = messageSent.created_at
+    with open('config.yml', "w") as f:
+        yaml.dump(config, f)
+
+def retrieve_channel(Client, UseNameOrId, Identifier):
+    """Returns a channel object based or either name or Id.
+    """
+    text_channel_object = None
+    for channel in Client.get_all_channels():
+        if UseNameOrId == 'id':
+            if channel.id == Identifier:
+                text_channel_object = channel
+                break
+        else:
+            if channel.name == Identifier:
+                text_channel_object = channel
+                break
+    return text_channel_object
+
+async def automated_netplay_tournament(client, config):
+    """Automates the creation of the Dutch Netplay Tournament Series. Each Tuesday at 13:00, a link is posted.
+    """
+    await asyncio.sleep(5)
+    while True:
+        last_netplay_tournament_sent = config['automate_netplay_tournament']['last_message_time']
+        when = next_tuesday(last_netplay_tournament_sent)
+        await discord.utils.sleep_until(when, result=None)
+        challonge_url = 'https://challonge.com/tournaments/signup/avesUkzTKW#/'
+        returnMessage = standard_messages.netplay_tournament_start.format(challonge_url)
+        channelToSend = client.get_channel(config['channel_ids']['netplay_tournament'])
+        messageSent = await channelToSend.send(returnMessage)
+        update_last_netplay_tournament_config(messageSent, config)
+        print('Netplay tournament created at {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+
+def next_tuesday(input_date):
+    def next_weekday(d):
+        days_ahead = 1 - d.weekday()
+        if days_ahead <= 0: # Target day already happened this week
+            days_ahead += 7
+        return d + datetime.timedelta(days_ahead)
+    next_tuesday = next_weekday(input_date)
+    next_netplaytournament_send_time = datetime.datetime(next_tuesday.year, next_tuesday.month, next_tuesday.day, 12, 0, 0)
+    return next_netplaytournament_send_time

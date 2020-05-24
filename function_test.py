@@ -9,7 +9,11 @@ import asyncio
 import logging
 import threading
 import time
+import datetime
+import asyncio
 from functions import discord_bot_helper_functions as helper
+from resources import standard_messages
+
 import os
 import yaml
 
@@ -30,19 +34,18 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 async def on_ready():
     print(f"We have logged in as {client.user}")
 
-@client.event
-async def on_message(message):
-    if message.channel.id == cfg['channel-ids']['guus-data']:
-        channel = message.channel
-        returnMessage = helper.retrieve_help_command(args, help_dict)
-            await message.channel.send(returnMessage)
-        # async for elem in channel.history().filter(predicate):
-        #     print(elem.author)
-        #     print(elem.content)
-        print(channel.id)
+last_netplay_tournament_sent = cfg['automate_netplay_tournament']['last_message_time']
+def next_tuesday(input_date):
+    def next_weekday(d):
+        days_ahead = 1 - d.weekday()
+        if days_ahead <= 0: # Target day already happened this week
+            days_ahead += 7
+        return d + datetime.timedelta(days_ahead)
+    next_tuesday = next_weekday(input_date)
+    next_netplaytournament_send_time = datetime.datetime(next_tuesday.year, next_tuesday.month, next_tuesday.day, 16, 0, 0)
+    return next_netplaytournament_send_time
 
-def predicate(message):
-    return not message.author.bot
-
-print(cfg)
-client.run(TOKEN)
+when = next_tuesday(last_netplay_tournament_sent)
+print(when)
+# client.loop.create_task(helper.automated_netplay_tournament(client, cfg))
+# client.run(TOKEN)

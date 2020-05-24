@@ -10,8 +10,9 @@ import logging
 import threading
 import time
 import os
+import yaml
+
 from functions import discord_bot_helper_functions as helper
-from resources import standard_messages
 
 import discord
 from discord.ext import commands
@@ -27,6 +28,9 @@ frame = pd.read_csv(filename, index_col=None,
 
 with open('./resources/help_doc.json') as handle:
     help_dict = json.loads(handle.read())
+
+file = open('config.yml', 'r')
+cfg = yaml.load(file, Loader=yaml.FullLoader)
 
 client = discord.Client()
 
@@ -63,7 +67,7 @@ async def on_ready():
 async def on_message(message):
     messageContent = message.content
     # check against bot ID so we don't get a loop.
-    if message.author.id == 706074466760786020:
+    if message.author.id == client.user.id:
         return
     if messageContent[0] == '!':
         args = messageContent.split()[1:]
@@ -170,4 +174,5 @@ async def on_message(message):
 
 #     await message.channel.send(returnMessage)
 
+client.loop.create_task(helper.automated_netplay_tournament(client, cfg))
 client.run(TOKEN)
