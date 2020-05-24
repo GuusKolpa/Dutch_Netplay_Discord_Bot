@@ -1,0 +1,5 @@
+# Stores important variables for the Discord bot
+
+channel-ids:
+  netplay-tournament: 416671216989110273
+  guus-data: 426690469184012289
