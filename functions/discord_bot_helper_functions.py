@@ -164,7 +164,7 @@ def update_last_netplay_tournament_config(messageSent, config):
     """
     config['automate_netplay_tournament']['last_message_id'] = messageSent.id
     config['automate_netplay_tournament']['last_message_time'] = messageSent.created_at
-    config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_message_time']+1
+    config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_iteration']+1
     with open('config.yml', "w") as f:
         yaml.dump(config, f)
 

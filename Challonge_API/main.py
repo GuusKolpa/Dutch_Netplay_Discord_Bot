@@ -56,6 +56,3 @@ def post_netplay_tournament(create_tournament_json_data):
             print(jsonResponse['errors'])
             resultMessage = 'Problem with creating/updating tournament, please contact bot owner'
             return resultMessage
-    
-returnMessage = post_netplay_tournament(create_tournament_paraments())
-print(returnMessage)

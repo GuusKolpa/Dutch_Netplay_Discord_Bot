@@ -21,7 +21,9 @@ from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
 
-file = open('config.yml', 'r')
+
+os.chdir(os.path.dirname(__file__))
+file = open('./config.yml', 'r')
 cfg = yaml.load(file, Loader=yaml.FullLoader)
 
 li = []

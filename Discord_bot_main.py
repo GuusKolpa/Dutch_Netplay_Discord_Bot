@@ -60,6 +60,8 @@ VoteCounter = VoteCountObj('init', VoteDict=dict(), VoteDuration=60, VoteTimeLef
 
 @client.event  # event decorator/wrapper
 async def on_ready():
+    CHALLONGE_API_KEY = os.getenv('CHALLONGE_TOKEN')
+    print(CHALLONGE_API_KEY)
     print(f"We have logged in as {client.user}")
 
 
@@ -68,6 +70,8 @@ async def on_message(message):
     messageContent = message.content
     # check against bot ID so we don't get a loop.
     if message.author.id == client.user.id:
+        return
+    if message.channel.id != cfg['channel_ids']['bot_commands']:
         return
     if messageContent[0] == '!':
         args = messageContent.split()[1:]

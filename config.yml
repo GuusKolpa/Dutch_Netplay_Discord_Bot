@@ -1,7 +1,8 @@
 automate_netplay_tournament:
-  last_message_id: 714114453163212800
-  last_message_time: 2020-05-24 13:55:53.239000
   last_iteration: 93
+  last_message_id: 714170266225213480
+  last_message_time: 2020-05-18 17:37:40.110000
 channel_ids:
+  bot_commands: 709499264858062998
   guus_data: 426690469184012289
   netplay_tournament: 416671216989110273
