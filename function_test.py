@@ -12,7 +12,6 @@ import time
 import datetime
 import asyncio
 from functions import discord_bot_helper_functions as helper
-from resources import standard_messages
 
 import os
 import yaml

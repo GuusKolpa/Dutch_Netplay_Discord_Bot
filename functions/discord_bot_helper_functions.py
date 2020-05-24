@@ -3,6 +3,7 @@ import os,sys,inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
+from Challonge_API import helper_functions as challonge_helper
 
 import datetime
 import re
@@ -163,6 +164,7 @@ def update_last_netplay_tournament_config(messageSent, config):
     """
     config['automate_netplay_tournament']['last_message_id'] = messageSent.id
     config['automate_netplay_tournament']['last_message_time'] = messageSent.created_at
+    config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_message_time']+1
     with open('config.yml', "w") as f:
         yaml.dump(config, f)
 
@@ -189,8 +191,7 @@ async def automated_netplay_tournament(client, config):
         last_netplay_tournament_sent = config['automate_netplay_tournament']['last_message_time']
         when = next_tuesday(last_netplay_tournament_sent)
         await discord.utils.sleep_until(when, result=None)
-        challonge_url = 'https://challonge.com/tournaments/signup/avesUkzTKW#/'
-        returnMessage = standard_messages.netplay_tournament_start.format(challonge_url)
+        returnMessage = challonge_helper.post_netplay_tournament(challonge_helper.create_tournament_paraments())
         channelToSend = client.get_channel(config['channel_ids']['netplay_tournament'])
         messageSent = await channelToSend.send(returnMessage)
         update_last_netplay_tournament_config(messageSent, config)
