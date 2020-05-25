@@ -1,23 +1,14 @@
 # bot.py
-import pandas as pd
-import matplotlib.pyplot as plt
-import glob
-from os.path import isfile, join
-from os import listdir
-import json
-import asyncio
-import logging
-import threading
-import time
-import os
-import yaml
 
+import os
 os.chdir(os.path.dirname(__file__))
+
+import pandas as pd
+from dotenv import load_dotenv
+import glob, json, asyncio, yaml, discord
+
 from functions import discord_bot_helper_functions as helper
 
-import discord
-from discord.ext import commands
-from dotenv import load_dotenv
 load_dotenv()
 
 li = []

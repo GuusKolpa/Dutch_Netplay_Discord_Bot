@@ -3,3 +3,4 @@ bot_resources/discord_token.txt
 **/__pycache__/
 *.pyc
 .vscode/*
+function_test.py

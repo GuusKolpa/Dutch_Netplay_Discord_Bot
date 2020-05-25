@@ -1,11 +1,6 @@
 import os,sys,inspect
-
 from bot_resources import standard_messages
-import requests
-import pytz
-import yaml
-import json
-import datetime
+import requests, pytz, yaml, json, datetime
 
 
 def create_tournament_parameters():
@@ -46,7 +41,7 @@ def post_netplay_tournament(create_tournament_json_data):
             sign_up_link = jsonResponse['tournament']['sign_up_url']
             print('Tournament exists, updating tournament')
             resultMessage = standard_messages.netplay_tournament_start.format(sign_up_link, tournament_number)
-            cfg['automate_netplay_tournament']['last_iteration'] = tournament_number
+            cfg['automate_netplay_tournament']['netplay_tournament'] = tournament_number
             with open('config.yml', "w") as f:
                 yaml.dump(cfg, f)
             return resultMessage, newEntry

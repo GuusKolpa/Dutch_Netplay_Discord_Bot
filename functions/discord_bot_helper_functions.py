@@ -1,18 +1,11 @@
-import time
 import os,sys,inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
-import Challonge_API.helper_functions as challonge_helper
 
-import datetime
-import re
-import json
-import yaml
-from collections import Counter
-import discord
+import Challonge_API.challonge_helper_functions as challonge_helper
 from bot_resources import standard_messages
-import asyncio
+import datetime, re, json, yaml, asyncio, discord
 
 
 class CustomError(Exception):
@@ -191,7 +184,7 @@ async def automated_netplay_tournament(client, config):
     while True:
         last_netplay_tournament_sent = config['automate_netplay_tournament']['last_message_time']
         when = next_tuesday(last_netplay_tournament_sent)
-        print(when)
+        print('Starting next netplay tournament at ', when)
         await discord.utils.sleep_until(when, result=None)
         returnMessage, newEntry = challonge_helper.post_netplay_tournament(challonge_helper.create_tournament_parameters())
         channelToSend = client.get_channel(config['channel_ids']['guus_data'])
@@ -200,6 +193,8 @@ async def automated_netplay_tournament(client, config):
         print('Netplay tournament created at {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
 def next_tuesday(input_date):
+    """Returns the date that the next netplay tournament should be organised, based on the time the last netplay tournament message was sent.
+    """
     def next_weekday(d):
         days_ahead = 1 - d.weekday()
         if days_ahead <= 0: # Target day already happened this week
