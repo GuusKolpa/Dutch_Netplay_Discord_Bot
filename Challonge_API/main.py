@@ -4,7 +4,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
 
 import Challonge_API.helper_functions as challonge_helper
-from resources import standard_messages
+from bot_resources import standard_messages
 import requests
 import pytz
 import yaml
@@ -33,24 +33,24 @@ def create_tournament_paraments():
     data['tournament[name]'] = data['tournament[name]'].format(tournament_number)
     data['tournament[url]'] = data['tournament[url]'].format(tournament_number)
     data['tournament[start_at]'] = start_time
-    return data
+    return data, tournament_number
 
 
-def post_netplay_tournament(create_tournament_json_data):
+def post_netplay_tournament(create_tournament_json_data, tournament_number):
 
     create_tournament_url = 'https://api.challonge.com/v1/tournaments{}.json'
     jsonResponse = requests.post(url = create_tournament_url.format(''), data = create_tournament_json_data).json()
     if not 'errors' in jsonResponse:
         print('Tournament created')
         sign_up_link = jsonResponse['tournament']['sign_up_url']
-        resultMessage = standard_messages.netplay_tournament_start.format(sign_up_link)
+        resultMessage = standard_messages.netplay_tournament_start.format(tournament_number, sign_up_link)
         return resultMessage
     else:
         if 'URL is already taken' in jsonResponse['errors']:
             jsonResponse = requests.put(url = create_tournament_url.format("/" + create_tournament_json_data['tournament[url]']), data = create_tournament_json_data).json()
             sign_up_link = jsonResponse['tournament']['sign_up_url']
             print('Tournament exists, updating tournament')
-            resultMessage = standard_messages.netplay_tournament_start.format(sign_up_link)
+            resultMessage = standard_messages.netplay_tournament_start.format(tournament_number, sign_up_link)
             return resultMessage
         else:
             print(jsonResponse['errors'])

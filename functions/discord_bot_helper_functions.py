@@ -3,7 +3,7 @@ import os,sys,inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
-from Challonge_API import helper_functions as challonge_helper
+import Challonge_API.helper_functions as challonge_helper
 
 import datetime
 import re
@@ -11,7 +11,7 @@ import json
 import yaml
 from collections import Counter
 import discord
-from resources import standard_messages
+from bot_resources import standard_messages
 import asyncio
 
 
@@ -159,12 +159,13 @@ def print_result_of_vote(VoteCounter):
             strToPost = strToPost + '{}: {}\n'.format(votes[0],str(votes[1]))
         return strToPost
 
-def update_last_netplay_tournament_config(messageSent, config):
+def update_last_netplay_tournament_config(messageSent, newEntry, config):
     """Update the config.yml file to have the most recent tournament update.
     """
     config['automate_netplay_tournament']['last_message_id'] = messageSent.id
     config['automate_netplay_tournament']['last_message_time'] = messageSent.created_at
-    config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_iteration']+1
+    if newEntry:
+        config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_iteration']+1
     with open('config.yml', "w") as f:
         yaml.dump(config, f)
 
@@ -190,11 +191,12 @@ async def automated_netplay_tournament(client, config):
     while True:
         last_netplay_tournament_sent = config['automate_netplay_tournament']['last_message_time']
         when = next_tuesday(last_netplay_tournament_sent)
+        print(when)
         await discord.utils.sleep_until(when, result=None)
-        returnMessage = challonge_helper.post_netplay_tournament(challonge_helper.create_tournament_paraments())
-        channelToSend = client.get_channel(config['channel_ids']['netplay_tournament'])
+        returnMessage, newEntry = challonge_helper.post_netplay_tournament(challonge_helper.create_tournament_parameters())
+        channelToSend = client.get_channel(config['channel_ids']['guus_data'])
         messageSent = await channelToSend.send(returnMessage)
-        update_last_netplay_tournament_config(messageSent, config)
+        update_last_netplay_tournament_config(messageSent, newEntry, config)
         print('Netplay tournament created at {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
 def next_tuesday(input_date):
@@ -204,5 +206,5 @@ def next_tuesday(input_date):
             days_ahead += 7
         return d + datetime.timedelta(days_ahead)
     next_tuesday = next_weekday(input_date)
-    next_netplaytournament_send_time = datetime.datetime(next_tuesday.year, next_tuesday.month, next_tuesday.day, 12, 0, 0)
+    next_netplaytournament_send_time = datetime.datetime(next_tuesday.year, next_tuesday.month, next_tuesday.day, 11, 0, 0)
     return next_netplaytournament_send_time

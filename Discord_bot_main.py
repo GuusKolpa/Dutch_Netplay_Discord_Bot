@@ -12,6 +12,7 @@ import time
 import os
 import yaml
 
+os.chdir(os.path.dirname(__file__))
 from functions import discord_bot_helper_functions as helper
 
 import discord
@@ -21,12 +22,11 @@ load_dotenv()
 
 li = []
 
-os.chdir(os.path.dirname(__file__))
-filename = "./resources/Dutch_Melee_Discord_Post_History.csv"
+filename = "./bot_resources/Dutch_Melee_Discord_Post_History.csv"
 frame = pd.read_csv(filename, index_col=None,
                     header=0, parse_dates=['DateCol'])
 
-with open('./resources/help_doc.json') as handle:
+with open('./bot_resources/help_doc.json') as handle:
     help_dict = json.loads(handle.read())
 
 file = open('config.yml', 'r')
