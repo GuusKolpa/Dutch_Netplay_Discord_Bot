@@ -5,6 +5,7 @@ sys.path.insert(0, parent_dir)
 
 import Challonge_API.challonge_helper_functions as challonge_helper
 from bot_resources import standard_messages
+from collections import Counter
 import datetime, re, json, yaml, asyncio, discord
 
 
