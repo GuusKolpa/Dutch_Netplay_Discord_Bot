@@ -1,8 +1,8 @@
 bot_resources/Dutch_Melee_Discord_Post_History.csv
 bot_resources/discord_token.txt
 bot_resources/discord_bot_key_pair.pem
-bot_resources/discord_bot_key_pair.ppk
-bot_resources/discord_bot_key_pair.ppk
+bot_resources/discord_bot_key_pair_20200604.ppk
+bot_resources/discord_bot_key_pair_20200621.ppk
 smash_carols_curated.csv
 **/__pycache__/
 *.pyc
