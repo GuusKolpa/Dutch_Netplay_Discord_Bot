@@ -169,15 +169,5 @@ async def on_message(message):
 
 
 
-### THIS IS TOO POWERFUL: CAN READ AND STORE DELETED MESSAGES ###
-# @client.event
-# async def on_message_delete(message):
-#     DeletedMessageContent = message.content
-#     UserWhoDeleted = message.author.name
-#     CreatedTime = message.created_at.strftime('%d-%m-%Y @ %H:%M')
-#     returnMessage = 'Deleted message: "{}" - posted by {} at {}'.format(DeletedMessageContent, UserWhoDeleted, CreatedTime)
-
-#     await message.channel.send(returnMessage)
-
 client.loop.create_task(helper.automated_netplay_tournament(client, cfg))
 client.run(TOKEN)
