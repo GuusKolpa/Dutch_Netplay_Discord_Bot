@@ -17,6 +17,7 @@ filename = "./bot_resources/Dutch_Melee_Discord_Post_History.csv"
 frame = pd.read_csv(filename, index_col=None,
                     header=0, parse_dates=['DateCol'])
 
+
 with open('./bot_resources/help_doc.json') as handle:
     help_dict = json.loads(handle.read())
 
@@ -51,9 +52,9 @@ VoteCounter = VoteCountObj('init', VoteDict=dict(), VoteDuration=60, VoteTimeLef
 
 @client.event  # event decorator/wrapper
 async def on_ready():
-    CHALLONGE_API_KEY = os.getenv('CHALLONGE_TOKEN')
-    print(CHALLONGE_API_KEY)
     print(f"We have logged in as {client.user}")
+    # await client.get_channel(
+    #     cfg['channel_ids']['bot_commands']).send('Howdy! \U0001f920')
 
 
 @client.event
@@ -81,6 +82,15 @@ async def on_message(message):
         elif command == '!image':
             # Generates a random image #
             returnMessage = helper.generate_image(frame, args)
+            await message.channel.send(returnMessage)
+
+        elif command == "!carol":
+            # Generates a random Smasher's Carol quote #
+            carol_file = "./bot_resources/smash_carols_curated.csv"
+            carol_quotes = pd.read_csv(carol_file, index_col=None,
+                                header=0)
+            carol_quotes_curated = carol_quotes[carol_quotes["Quality"]==1]
+            returnMessage = carol_quotes_curated.sample(1).reset_index()["Sentence"][0]
             await message.channel.send(returnMessage)
 
         elif command == '!start_vote':
