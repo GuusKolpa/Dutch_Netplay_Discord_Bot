@@ -9,8 +9,6 @@ import glob, json, asyncio, yaml, discord
 
 from functions import discord_bot_helper_functions as helper
 
-load_dotenv()
-
 li = []
 
 filename = "./bot_resources/Dutch_Melee_Discord_Post_History.csv"
