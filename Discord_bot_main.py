@@ -1,7 +1,7 @@
 # bot.py
 
 import os
-os.chdir(os.path.dirname(__file__))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -18,6 +18,8 @@ frame = pd.read_csv(filename, index_col=None,
 
 with open('./bot_resources/help_doc.json') as handle:
     help_dict = json.loads(handle.read())
+with open('./bot_resources/role_assignments.json') as handle:
+    roles_dict = json.loads(handle.read())
 
 file = open('config.yml', 'r')
 cfg = yaml.load(file, Loader=yaml.FullLoader)
@@ -61,9 +63,7 @@ async def on_message(message):
     # check against bot ID so we don't get a loop.
     if message.author.id == client.user.id:
         return
-    if message.channel.id != cfg['channel_ids']['bot_commands']:
-        return
-    if messageContent[0] == '!':
+    if  (message.channel.id == cfg['channel_ids']['bot_commands']) &(messageContent[0] == '!'):
         args = messageContent.split()[1:]
         command = messageContent.split()[0].lower()
 
