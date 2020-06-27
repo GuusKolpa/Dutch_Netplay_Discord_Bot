@@ -21,8 +21,10 @@ with open('./bot_resources/help_doc.json') as handle:
 with open('./bot_resources/role_assignments.json') as handle:
     roles_dict = json.loads(handle.read())
 
-file = open('config.yml', 'r')
-cfg = yaml.load(file, Loader=yaml.FullLoader)
+with open('config.yml', 'r') as handle:
+    cfg = yaml.load(handle, Loader=yaml.FullLoader)
+with open('challonge_config.yml', 'r') as handle:
+    challonge_cfg = yaml.load(handle, Loader=yaml.FullLoader)
 
 client = discord.Client()
 
@@ -167,5 +169,5 @@ async def on_message(message):
 
 
 
-client.loop.create_task(helper.automated_netplay_tournament(client, cfg))
+client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
 client.run(TOKEN)
