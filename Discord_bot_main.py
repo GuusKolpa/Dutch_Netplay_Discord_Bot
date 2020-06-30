@@ -173,6 +173,6 @@ async def on_message(message):
             returnMessage = 'Command {} not found'.format(command)
             await message.channel.send(returnMessage)
 
-
+# Add line
 client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
 client.run(TOKEN)
