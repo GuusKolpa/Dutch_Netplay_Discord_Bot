@@ -1,5 +1,7 @@
+guild_ids:
+  home_guild: 426690468798267411
+  dutch_melee_netplay: 283580261520769026
 channel_ids:
   bot_commands: 709499264858062998
-  guus_data: 426690469184012289
   netplay_tournament: 416671216989110273
   role-requests: 726528868873142382

@@ -1,4 +1,7 @@
 import os,sys,inspect
+from os import listdir
+from os.path import isfile, join
+
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
@@ -204,3 +207,12 @@ def next_tuesday(input_date):
     next_tuesday = next_weekday(input_date)
     next_netplaytournament_send_time = datetime.datetime(next_tuesday.year, next_tuesday.month, next_tuesday.day, 11, 0, 0)
     return next_netplaytournament_send_time
+
+def add_emoji(discord_client, config, emojiName):
+    home_guild_item = discord.utils.get(discord_client.guilds, id=config['guild_ids']['home_guild'])
+    emoji = discord.utils.get(home_guild_item.emojis, name=emojiName)
+    return emoji
+
+def get_all_characters():
+    CharacterList = ['Fox', 'Falco', 'Marth', 'Sheik', 'Jigglypuff', 'CaptainFalcon', 'PrincessPeach', 'Pikachu', 'Yoshi', 'IceClimbers', 'Samus', 'DonkeyKong', 'DrMario', 'Mario', 'Luigi', 'Ganondorf', 'Link', 'YoungLink', 'Pichu', 'Mewtwo', 'MrGameWatch', 'Roy', 'Ness', 'PrincessZelda', 'Kirby', 'Bowser']
+    return CharacterList

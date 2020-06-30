@@ -4,7 +4,7 @@ import requests, pytz, yaml, json, datetime
 
 
 def create_tournament_parameters():
-    file = open('config.yml', 'r')
+    file = open('challonge_config.yml', 'r')
     cfg = yaml.load(file, Loader=yaml.FullLoader)
 
     with open('./Challonge_API/create_tournament.json') as json_file:
@@ -22,7 +22,7 @@ def create_tournament_parameters():
 
 
 def post_netplay_tournament(create_tournament_json_data):
-    file = open('config.yml', 'r')
+    file = open('challonge_config.yml', 'r')
     cfg = yaml.load(file, Loader=yaml.FullLoader)
     tournament_number = cfg['automate_netplay_tournament']['last_iteration']+1
     create_tournament_url = 'https://api.challonge.com/v1/tournaments{}.json'
@@ -42,7 +42,7 @@ def post_netplay_tournament(create_tournament_json_data):
             print('Tournament exists, updating tournament')
             resultMessage = standard_messages.netplay_tournament_start.format(sign_up_link, tournament_number)
             cfg['automate_netplay_tournament']['netplay_tournament'] = tournament_number
-            with open('config.yml', "w") as f:
+            with open('challonge_config.yml', "w") as f:
                 yaml.dump(cfg, f)
             return resultMessage, newEntry
         else:
