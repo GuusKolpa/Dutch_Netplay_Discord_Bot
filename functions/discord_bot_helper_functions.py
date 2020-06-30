@@ -163,7 +163,7 @@ def update_last_netplay_tournament_config(messageSent, newEntry, config):
     config['automate_netplay_tournament']['last_message_time'] = messageSent.created_at
     if newEntry:
         config['automate_netplay_tournament']['last_iteration'] = config['automate_netplay_tournament']['last_iteration']+1
-    with open('config.yml', "w") as f:
+    with open('challonge_config.yml', "w") as f:
         yaml.dump(config, f)
 
 def retrieve_channel(Client, UseNameOrId, Identifier):
@@ -190,8 +190,11 @@ async def automated_netplay_tournament(client, config):
         when = next_tuesday(last_netplay_tournament_sent)
         print('Starting next netplay tournament at ', when)
         await discord.utils.sleep_until(when, result=None)
+        with open('config.yml', 'r') as handle:
+            netplayChannelId = yaml.load(handle, Loader=yaml.FullLoader)['channel_ids']['netplay_tournament']
+            print(netplayChannelId)
         returnMessage, newEntry = challonge_helper.post_netplay_tournament(challonge_helper.create_tournament_parameters())
-        channelToSend = client.get_channel(config['channel_ids']['netplay_tournament'])
+        channelToSend = client.get_channel(netplayChannelId)
         messageSent = await channelToSend.send(returnMessage)
         update_last_netplay_tournament_config(messageSent, newEntry, config)
         print('Netplay tournament created at {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
