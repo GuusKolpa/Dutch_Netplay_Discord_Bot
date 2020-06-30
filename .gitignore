@@ -8,4 +8,3 @@ smash_carols_curated.csv
 *.pyc
 .vscode/*
 function_test.py
-challonge_config.yml
