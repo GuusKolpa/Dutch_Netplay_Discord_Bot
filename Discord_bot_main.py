@@ -5,7 +5,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import pandas as pd
 from dotenv import load_dotenv
-import glob, json, asyncio, yaml, discord
+import glob, json, asyncio, yaml, discord, csv
 
 from functions import discord_bot_helper_functions as helper
 
@@ -172,6 +172,23 @@ async def on_message(message):
             # If command does not exist, mention it #
             returnMessage = 'Command {} not found'.format(command)
             await message.channel.send(returnMessage)
+
+@client.event
+async def on_message_delete(message):
+    # if  (message.channel.id == cfg['channel_ids']['role-requests']):
+    DeletedMessageContent = message.content
+    UserWhoDeleted = message.author.name
+    CreatedTime = message.created_at.strftime('%d-%m-%Y @ %H:%M')
+    Channel = message.channel.name
+    # returnMessage = 'Deleted message: "{}" - posted by {} at {}'.format(DeletedMessageContent, UserWhoDeleted, CreatedTime)
+    saveMessage = '{}, {}, {}, {}\n'.format(DeletedMessageContent, UserWhoDeleted, CreatedTime, Channel)
+    with open(r'bot_resources/delete_logs.csv', 'a', newline='') as csvfile:
+        fieldnames = ['MessageContent','User','TimePosted','Channel']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        print(saveMessage)
+        writer.writerow({'MessageContent' : DeletedMessageContent, 'User' : UserWhoDeleted, 'TimePosted' : CreatedTime, 'Channel' : Channel})
+
+        #await message.channel.send(returnMessage)
 
 # Add line
 client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
