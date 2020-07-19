@@ -196,7 +196,7 @@ async def on_raw_reaction_add(reaction_event):
         guild_item = discord.utils.find(lambda g: g.id == reaction_event.guild_id, client.guilds)
 
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
-        role = discord.utils.get(guild_item.roles, name='discussion')
+        role = discord.utils.get(guild_item.roles, name='Discussion')
         await member.add_roles(role)
 
 @client.event
@@ -205,7 +205,7 @@ async def on_raw_reaction_remove(reaction_event):
         guild_item = discord.utils.find(lambda g: g.id == reaction_event.guild_id, client.guilds)
 
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
-        role = discord.utils.get(guild_item.roles, name='discussion')
+        role = discord.utils.get(guild_item.roles, name='Discussion')
         await member.remove_roles(role)
 
 # Add line
