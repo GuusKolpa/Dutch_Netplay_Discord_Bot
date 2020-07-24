@@ -5,6 +5,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import pandas as pd
 from dotenv import load_dotenv
+from datetime import datetime
 import glob, json, asyncio, yaml, discord, csv
 
 from functions import discord_bot_helper_functions as helper
@@ -26,7 +27,7 @@ with open('config.yml', 'r') as handle:
 with open('challonge_config.yml', 'r') as handle:
     challonge_cfg = yaml.load(handle, Loader=yaml.FullLoader)
 
-client = discord.Client()
+client = discord.Client(max_messages = 20000)
 
 # Make sure to put the DISCORD_TOKEN environment variable with your appropriate token.
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -175,20 +176,22 @@ async def on_message(message):
 
 @client.event
 async def on_raw_message_delete(message):
-    # if  (message.channel.id == cfg['channel_ids']['role-requests']):
-    DeletedMessageContent = message.content
-    UserWhoDeleted = message.author.name
-    CreatedTime = message.created_at.strftime('%d-%m-%Y @ %H:%M')
-    Channel = message.channel.name
-    # returnMessage = 'Deleted message: "{}" - posted by {} at {}'.format(DeletedMessageContent, UserWhoDeleted, CreatedTime)
+    if message.cached_message == None:
+        DeletedMessageContent = 'Uncached message, ID: {}'.format(message.message_id)
+        UserWhoDeleted = 'Unknown' 
+        Channel = message.channel_id
+        CreatedTime = datetime.utcnow().strftime('%d-%m-%Y @ %H:%M')
+    else:
+        DeletedMessageContent = message.cached_message.content
+        UserWhoDeleted = message.cached_message.author.name
+        CreatedTime = message.cached_message.created_at.strftime('%d-%m-%Y @ %H:%M')
+        Channel = message.cached_message.channel.name
     saveMessage = '{}, {}, {}, {}\n'.format(DeletedMessageContent, UserWhoDeleted, CreatedTime, Channel)
     with open(r'bot_resources/delete_logs.csv', 'a', newline='') as csvfile:
         fieldnames = ['MessageContent','User','TimePosted','Channel']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         print(saveMessage)
         writer.writerow({'MessageContent' : DeletedMessageContent, 'User' : UserWhoDeleted, 'TimePosted' : CreatedTime, 'Channel' : Channel})
-
-        #await message.channel.send(returnMessage)
 
 @client.event
 async def on_raw_reaction_add(reaction_event):
@@ -207,6 +210,8 @@ async def on_raw_reaction_remove(reaction_event):
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
         role = discord.utils.get(guild_item.roles, name='Discussion')
         await member.remove_roles(role)
+
+
 
 # Add line
 client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
