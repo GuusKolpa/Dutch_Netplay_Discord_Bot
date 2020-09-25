@@ -7,5 +7,6 @@
     "tournament[public_sign_up]" : "true",
     "tournament[signup_cap]" : null,
     "tournament[start_at]" : "",
-    "tournament[game_id]" : 394
+    "tournament[game_id]" : 394,
+    "allow_participant_match_reporting": false
 }
