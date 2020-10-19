@@ -8,5 +8,5 @@
     "tournament[signup_cap]" : null,
     "tournament[start_at]" : "",
     "tournament[game_id]" : 394,
-    "allow_participant_match_reporting": false
+    "tournament[allow_participant_match_reporting]": false
 }
