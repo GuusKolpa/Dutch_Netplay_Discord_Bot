@@ -27,7 +27,8 @@ with open('config.yml', 'r') as handle:
 with open('challonge_config.yml', 'r') as handle:
     challonge_cfg = yaml.load(handle, Loader=yaml.FullLoader)
 
-client = discord.Client(max_messages = 20000)
+intents = discord.Intents.all()
+client = discord.Client(max_messages = 20000, intents=intents)
 
 # Make sure to put the DISCORD_TOKEN environment variable with your appropriate token.
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -197,7 +198,6 @@ async def on_raw_message_delete(message):
 async def on_raw_reaction_add(reaction_event):
     if (reaction_event.message_id == 732353090585362493) & (reaction_event.emoji.name == 'MarthThink'):
         guild_item = discord.utils.find(lambda g: g.id == reaction_event.guild_id, client.guilds)
-
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
         role = discord.utils.get(guild_item.roles, name='Discussion')
         await member.add_roles(role)
@@ -206,7 +206,7 @@ async def on_raw_reaction_add(reaction_event):
 async def on_raw_reaction_remove(reaction_event):
     if (reaction_event.message_id == 732353090585362493) & (reaction_event.emoji.name == 'MarthThink'):
         guild_item = discord.utils.find(lambda g: g.id == reaction_event.guild_id, client.guilds)
-
+        
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
         role = discord.utils.get(guild_item.roles, name='Discussion')
         await member.remove_roles(role)
