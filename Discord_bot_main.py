@@ -215,5 +215,5 @@ async def on_raw_reaction_remove(reaction_event):
 
 
 # Add line
-# client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
+client.loop.create_task(helper.automated_netplay_tournament(client, challonge_cfg))
 client.run(TOKEN)
