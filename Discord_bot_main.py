@@ -196,7 +196,7 @@ async def on_raw_message_delete(message):
 
 @client.event
 async def on_raw_reaction_add(reaction_event):
-    if (reaction_event.message_id == 732353090585362493) & (reaction_event.emoji.name == 'MarthThink') & (reaction_event.user_id != 118886597293768709):
+    if (reaction_event.message_id == 732353090585362493) & (reaction_event.emoji.name == 'MarthThink') & (reaction_event.user_id != 118886597293768709 ) & (reaction_event.user_id != 260746435580919818 ):
         print(reaction_event.user_id)
         guild_item = discord.utils.find(lambda g: g.id == reaction_event.guild_id, client.guilds)
         member = discord.utils.find(lambda m: m.id == reaction_event.user_id, guild_item.members)
