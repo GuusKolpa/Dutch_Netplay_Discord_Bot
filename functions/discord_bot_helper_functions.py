@@ -230,14 +230,15 @@ def get_all_characters():
 def return_funds(config):
     # get all symbol prices
     price_adausdt = float(binance_client.get_avg_price(symbol='ADAUSDT')['price'])
-    price_eurusdt = float(binance_client.get_avg_price(symbol='EURUSDT')['price'])
     community_fund_initial_ADA_total = config["stonks"]["community_fund_init_ADA"]
     community_fund_initial_ADA_price = config["stonks"]["community_fund_init_ADA_price"]
-    community_fund_initial_eur = config["stonks"]["community_fund_init_EUR"]
-    current_eur = community_fund_initial_ADA_total*price_adausdt/price_eurusdt
+    community_fund_initial_usd = config["stonks"]["community_fund_init_USD"]
+    current_usd = community_fund_initial_ADA_total*price_adausdt
+    margin = current_usd/community_fund_initial_usd
 
-    message_stonks = "**Current value of #stonks4Somnio community fund: €{current_eur}**\nInitial fund: €{community_fund_initial_eur}\nCurrent ADA price: ${price_adausdt}\nStart ADA price: ${community_fund_initial_ADA_price}\nTotal ADA: {community_fund_initial_ADA_total}".format(current_eur=round(current_eur,2), 
-                                            community_fund_initial_eur=round(community_fund_initial_eur,2),
+    message_stonks = "**Current value of #stonks4Somnio community fund: ${current_usd} ({margin}x)**\nInitial fund: ${community_fund_initial_usd}\nCurrent ADA price: ${price_adausdt}\nStart ADA price: ${community_fund_initial_ADA_price}\nTotal ADA: {community_fund_initial_ADA_total}".format(current_usd=round(current_usd,2),
+                                            margin = round(margin,2),
+                                            community_fund_initial_usd=round(community_fund_initial_usd,2),
                                             community_fund_initial_ADA_price=round(community_fund_initial_ADA_price,3),
                                             price_adausdt=round(price_adausdt,3),
                                             community_fund_initial_ADA_total=round(community_fund_initial_ADA_total,2))
