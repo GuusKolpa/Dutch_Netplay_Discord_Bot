@@ -1,15 +1,22 @@
 import os,sys,inspect
 from os import listdir
 from os.path import isfile, join
+from binance.client import Client as biClient
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
 
+api_key = os.getenv('binance_api_key')
+api_secret = os.getenv('binance_api_secret')
+
+binance_client = biClient(api_key, api_secret)
+
 import Challonge_API.challonge_helper_functions as challonge_helper
 from bot_resources import standard_messages
 from collections import Counter
 import datetime, re, json, yaml, asyncio, discord
+
 
 
 class CustomError(Exception):
@@ -219,3 +226,19 @@ def add_emoji(discord_client, config, emojiName):
 def get_all_characters():
     CharacterList = ['Fox', 'Falco', 'Marth', 'Sheik', 'Jigglypuff', 'CaptainFalcon', 'PrincessPeach', 'Pikachu', 'Yoshi', 'IceClimbers', 'Samus', 'DonkeyKong', 'DrMario', 'Mario', 'Luigi', 'Ganondorf', 'Link', 'YoungLink', 'Pichu', 'Mewtwo', 'MrGameWatch', 'Roy', 'Ness', 'PrincessZelda', 'Kirby', 'Bowser']
     return CharacterList
+
+def return_funds(config):
+    # get all symbol prices
+    price_adausdt = float(binance_client.get_avg_price(symbol='ADAUSDT')['price'])
+    price_eurusdt = float(binance_client.get_avg_price(symbol='EURUSDT')['price'])
+    community_fund_initial_ADA_total = config["stonks"]["community_fund_init_ADA"]
+    community_fund_initial_ADA_price = config["stonks"]["community_fund_init_ADA_price"]
+    community_fund_initial_eur = config["stonks"]["community_fund_init_EUR"]
+    current_eur = community_fund_initial_ADA_total*price_adausdt/price_eurusdt
+
+    message_stonks = "**Current value of #stonks4Somnio community fund: €{current_eur}**\nInitial fund: €{community_fund_initial_eur}\nCurrent ADA price: ${price_adausdt}\nStart ADA price: ${community_fund_initial_ADA_price}\nTotal ADA: {community_fund_initial_ADA_total}".format(current_eur=round(current_eur,2), 
+                                            community_fund_initial_eur=round(community_fund_initial_eur,2),
+                                            community_fund_initial_ADA_price=round(community_fund_initial_ADA_price,3),
+                                            price_adausdt=round(price_adausdt,3),
+                                            community_fund_initial_ADA_total=round(community_fund_initial_ADA_total,2))
+    return message_stonks

@@ -3,6 +3,11 @@ guild_ids:
   dutch_melee_netplay: 283580261520769026
 channel_ids:
   bot_commands: 709499264858062998
+  debug: 706076380948987947
   netplay_tournament: 416671216989110273
   role-requests: 726528868873142382
   discussion: 481476689004724224
+stonks:
+  community_fund_init_ADA: 330
+  community_fund_init_EUR: 200
+  community_fund_init_ADA_price: 0.727

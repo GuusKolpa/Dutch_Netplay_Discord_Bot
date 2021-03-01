@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 import glob, json, asyncio, yaml, discord, csv
 
+
+
 from functions import discord_bot_helper_functions as helper
 
 li = []
@@ -74,6 +76,7 @@ async def on_message(message):
 
 
     if  (message.channel.id == cfg['channel_ids']['bot_commands']) &(messageContent[0] == '!'):
+    # if  (message.channel.id == cfg['channel_ids']['debug']) &(messageContent[0] == '!'):
         args = messageContent.split()[1:]
         command = messageContent.split()[0].lower()
 
@@ -90,6 +93,11 @@ async def on_message(message):
         elif command == '!image':
             # Generates a random image #
             returnMessage = helper.generate_image(frame, args)
+            await message.channel.send(returnMessage)
+
+        elif command == '!stonksfund':
+            # Generates a random image #
+            returnMessage = helper.return_funds(cfg)
             await message.channel.send(returnMessage)
 
         elif command == "!carol":
