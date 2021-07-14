@@ -15,9 +15,9 @@ def create_tournament_parameters():
     NL_timezone = pytz.timezone('Europe/Amsterdam')
     start_time = NL_timezone.localize(datetime.datetime.now().replace(hour=20, minute=0, second=0, microsecond=0)).__str__()
     data['api_key'] = CHALLONGE_API_KEY
-    data['tournament[name]'] = data['tournament[name]'].format(tournament_number)
-    data['tournament[url]'] = data['tournament[url]'].format(tournament_number)
-    data['tournament[start_at]'] = start_time
+    data['name'] = data['name'].format(tournament_number)
+    data['url'] = data['url'].format(tournament_number)
+    data['start_at'] = start_time
     return data
 
 
@@ -25,7 +25,8 @@ def post_netplay_tournament(create_tournament_json_data):
     file = open('challonge_config.yml', 'r')
     cfg = yaml.load(file, Loader=yaml.FullLoader)
     tournament_number = cfg['automate_netplay_tournament']['last_iteration']+1
-    create_tournament_url = 'https://api.challonge.com/v1/tournaments{}.json'
+    create_tournament_url = 'https://api.challonge.com/v1/tournaments.json'
+    print(create_tournament_json_data)
     jsonResponse = requests.post(url = create_tournament_url.format(''), data = create_tournament_json_data).json()
     newEntry = False
     print(jsonResponse)
@@ -37,7 +38,7 @@ def post_netplay_tournament(create_tournament_json_data):
         return resultMessage, newEntry
     else:
         if 'URL is already taken' in jsonResponse['errors']:
-            jsonResponse = requests.put(url = create_tournament_url.format("/" + create_tournament_json_data['tournament[url]']), data = create_tournament_json_data).json()
+            jsonResponse = requests.put(url = create_tournament_url.format("/" + create_tournament_json_data['url']), data = create_tournament_json_data).json()
             sign_up_link = jsonResponse['tournament']['sign_up_url']
             print('Tournament exists, updating tournament')
             resultMessage = standard_messages.netplay_tournament_start.format(sign_up_link, tournament_number)

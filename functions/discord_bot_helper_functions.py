@@ -228,6 +228,9 @@ def get_all_characters():
     return CharacterList
 
 def return_funds(config):
+    lastStonksCheck = datetime.datetime.now() - config["stonks"]["last_stonks_check"]
+    if (lastStonksCheck.days * 24 + lastStonksCheck.seconds/3600) < 1:
+        return 'Calm down with the stonks-checking, I\'m still on cooldown <:armada:732312560057057310>'
     # get all symbol prices
     price_adausdt = float(binance_client.get_avg_price(symbol='ADAUSDT')['price'])
     community_fund_initial_ADA_total = config["stonks"]["community_fund_init_ADA"]
@@ -242,4 +245,8 @@ def return_funds(config):
                                             community_fund_initial_ADA_price=round(community_fund_initial_ADA_price,3),
                                             price_adausdt=round(price_adausdt,3),
                                             community_fund_initial_ADA_total=round(community_fund_initial_ADA_total,2))
+    config['stonks']['last_stonks_check'] = datetime.datetime.now()
+    print(current_dir)
+    with open('config.yml', "w") as f:
+        yaml.dump(config, f)
     return message_stonks

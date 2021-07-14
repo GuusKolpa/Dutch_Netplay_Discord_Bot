@@ -1,12 +1,12 @@
 {
-    "tournament[name]" : "NL Netplay {} (NTSC)",
-    "tournament[tournament_type]" : "double elimination",
-    "tournament[url]" : "NLnetplay{}",
-    "tournament[description]" : "YOUR TAG IN THE DUTCH DISCORD  MUST BE THE EXACT SAME AS YOUR TAG IN THE CHALLONGE TOURNAMENT OR YOU WILL NOT BE ABLE TO PLAY. We are using a bot to automate everything, but it requires the same names.<br>We are playing NTSC<br>Bo5 TBA.<br>Stagestrike via G&W side b (highest NR wins.)<br>You have 10minutes after your match is called to be present or you get Dq'd.<br>Laggers = DQ (Dutch connection gets priority unless its clear its their internet at fault.)<br>One setup per player. Setup sharing = DQ for both.<br>Sign up under your discord alias or get perma dq'd from this tournament.",
-    "tournament[open_signup]" : "true",
-    "tournament[public_sign_up]" : "true",
-    "tournament[signup_cap]" : null,
-    "tournament[start_at]" : "",
-    "tournament[game_id]" : 394,
-    "tournament[allow_participant_match_reporting]": false
+    "name" : "NL Netplay {} (NTSC)",
+    "tournament_type" : "double elimination",
+    "url" : "NLnetplay{}",
+    "description" : "YOUR TAG IN THE DUTCH DISCORD  MUST BE THE EXACT SAME AS YOUR TAG IN THE CHALLONGE TOURNAMENT OR YOU WILL NOT BE ABLE TO PLAY. We are using a bot to automate everything, but it requires the same names.<br>We are playing NTSC<br>Bo5 TBA.<br>Stagestrike via G&W side b (highest NR wins.)<br>You have 10minutes after your match is called to be present or you get Dq'd.<br>Laggers = DQ (Dutch connection gets priority unless its clear its their internet at fault.)<br>One setup per player. Setup sharing = DQ for both.<br>Sign up under your discord alias or get perma dq'd from this tournament.",
+    "open_signup" : "true",
+    "public_sign_up" : "true",
+    "signup_cap" : null,
+    "start_at" : "",
+    "game_id" : 394,
+    "allow_participant_match_reporting": false
 }
